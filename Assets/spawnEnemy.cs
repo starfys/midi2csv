@@ -6,18 +6,14 @@ using UnityEngine;
 public class spawnEnemy : MonoBehaviour {
 
     [MenuItem("/gen_level")]
-    public static void levelGen(string levelName )
+    public static void levelGen(string levelName="luke.mid", string outputname="luke.csv" )
     {
-        //UnityEngine.Debug.Log("test1\n");
-        //while (true) ;
-        // using System.Diagnostics;
+        
         Process p = new Process();
         try
         {
             p.StartInfo.FileName = "python";
-            //p.StartInfo.Arguments = "gen_level.py";
-            //p.StartInfo.Arguments = "gen_level.py level1.csv";
-            p.StartInfo.Arguments = "gen_level.py "+ levelName;
+            p.StartInfo.Arguments = "gen_level.py "+ levelName+ " "+ outputname;
             // Pipe the output to itself - we will catch this later
             p.StartInfo.RedirectStandardError = true;
             p.StartInfo.RedirectStandardOutput = true;
@@ -26,8 +22,7 @@ public class spawnEnemy : MonoBehaviour {
             // Where the script lives
             p.StartInfo.WorkingDirectory = Application.dataPath + "/gen_level/";
             p.StartInfo.UseShellExecute = false;
-            //UnityEngine.Debug.Log("test1\n");
-
+        
             p.Start();
             // Read the output - this will show is a single entry in the console - you could get  fancy and make it log for each line - but thats not why we're here
             //UnityEngine.Debug.Log(p.StandardOutput.ReadToEnd());
@@ -42,18 +37,33 @@ public class spawnEnemy : MonoBehaviour {
     }
 
 
-    public GameObject[] notes;
+    public GameObject original;
+    public GameObject clone;
+    /*
     public float radius = 1.0f;
     public float minSpawnTime = 1.0f;
     public float maxSpawnTime = 10.0f;
     public bool constantSpawn = false;
-
+    */
+    note[] arr;
     void Start()
     {
         //UnityEngine.Debug.Log("this is here");
-        SpawnEnemy();
+        //levelGen("luke.mid");
+        SpawnEnemy("luke.csv");
 
     }
+    //
+    /*
+    void Update()
+    {
+        //foreach (note n in arr) {
+            clone = Instantiate(original, transform.position, transform.rotation) as GameObject;
+        Destroy(clone);
+        //}
+    }
+    */
+    /*
     void OnTriggerEnter(Collider ShipMaster)
     {
         Invoke("SpawnEnemy", UnityEngine.Random.Range(minSpawnTime, maxSpawnTime));
@@ -70,6 +80,7 @@ public class spawnEnemy : MonoBehaviour {
             CancelInvoke("SpawnEnemy");
         }
     }
+    */
     /* 
         3
         2 a4 c8
@@ -80,7 +91,7 @@ public class spawnEnemy : MonoBehaviour {
 
     void SpawnEnemy(string levelname= "level.csv"){
         
-        levelGen(Application.dataPath +"/"+levelname);
+        //levelGen(Application.dataPath +"/"+levelname);
         //float spawnRadius = radius;
         //int spawnObjectIndex = Random.Range(0, spawnObject.Length);
 
@@ -91,7 +102,7 @@ public class spawnEnemy : MonoBehaviour {
         int counter = 0;
         int size=Int32.Parse(file.ReadLine());
         
-        note[] arr= new note[size];
+        arr= new note[size];
         //UnityEngine.Debug.Log();
         while ((line = file.ReadLine()) != null)
         {
@@ -107,14 +118,9 @@ public class spawnEnemy : MonoBehaviour {
         {
             UnityEngine.Debug.Log(n.getDuration().ToString());
         }
-        
-        //Instantiate(notes[size]);
-        /*
-        if (constantSpawn == true)
-        {
-            Invoke("SpawnEnemy", Random.Range(minSpawnTime, maxSpawnTime));
-        }
-        */
+        //object prefab, location, quatarnian
+        Instantiate(original, new Vector3(0, 0, 0), Quaternion.identity);
+
     }
 
 

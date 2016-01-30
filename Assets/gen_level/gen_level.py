@@ -1,9 +1,28 @@
+#!/usr/bin/python2
+import midi
 import sys
-#print ("1\n2 a4 c8\n4 d4 f8\n8 a4 c8")
-#print (sys.argv[1])
-with open(sys.argv[1], "w") as f:
-	f.write("2 20")
-	f.write("1000 10 1000")
-	f.write("2000 10 1000")
-	f.write("3000 60 1000")
-	
+pattern = midi.read_midifile(sys.argv[1])
+output_file = open(sys.argv[2], 'w+')
+#tempoTrack = pattern[0]
+#tempoTrack.make_ticks_abs()
+#print(tempoTrack)
+#Get the main track
+pattern = pattern[1]
+#Fix ticks
+pattern.make_ticks_abs()
+#Used to keep track of note positions
+turned_on = {}
+#Used to keep track of played notes
+notes = []
+for event in pattern:
+    if type(event) == midi.NoteOnEvent:
+        turned_on[event.data[0]] = event.tick
+        if event.data[0] == 0:
+            notes.append((turned_on[event.data[0]], event.data[0], event.tick - turned_on[event.data[0]]))
+    elif type(event) == midi.NoteOffEvent:
+        notes.append((turned_on[event.data[0]], event.data[0], event.tick - turned_on[event.data[0]]))
+notes.sort()
+print >>output_file, 2000
+print >>output_file, len(notes)
+for note in notes:
+    print >>output_file, note[0], note[1], note[2]
