@@ -20,8 +20,6 @@ pattern = midi.read_midifile(sys.argv[1])
 tempo = 500000.0
 resolution = pattern.resolution * 1.0
 output_file = open(sys.argv[2], 'w+')
-output_file_raw = open(sys.argv[2]+".raw", 'w+')
-print >>output_file_raw, pattern
 events = []
 for track in pattern:
     track.make_ticks_abs()
