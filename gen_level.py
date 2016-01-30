@@ -3,7 +3,6 @@ import midi
 import sys
 
 def compare(event1, event2):
- 
     if event1[0] < event2[0]:
         return -1
     elif event1[0] > event2[0]:
@@ -18,8 +17,16 @@ def compare(event1, event2):
 
 pattern = midi.read_midifile(sys.argv[1])
 tempo = 500000.0
+pat_form = pattern.format
+pat_form += 1
+print "Format: ", pat_form
+if (pat_form == 2):
+    print "Format 2 not permitted! Use a different .midi, sorry."
+    exit()
 resolution = pattern.resolution * 1.0
 output_file = open(sys.argv[2], 'w+')
+#output_file_raw = open(sys.argv[2]+".raw", 'w+')
+#print >>output_file_raw, pattern
 events = []
 for track in pattern:
     track.make_ticks_abs()
