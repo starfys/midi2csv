@@ -89,16 +89,15 @@ public class spawnEnemy : MonoBehaviour {
         System.IO.StreamReader file = new System.IO.StreamReader(Application.dataPath +"/gen_level/"+ levelname);
         string line;
         int counter = 0;
-        String[] row = file.ReadLine().Split(' ');
-        int size=Int32.Parse(row[0]);
-        int tempoConst= Int32.Parse(row[1]);
+        int size=Int32.Parse(file.ReadLine());
+        
         note[] arr= new note[size];
         //UnityEngine.Debug.Log();
         while ((line = file.ReadLine()) != null)
         {
-            row = line.Split(' ');
+            String[] row = line.Split(' ');
             //UnityEngine.Debug.Log(Int32.Parse(row[0]));
-            arr[counter]= new note(Int32.Parse(row[0]), Int32.Parse(row[1]), Int32.Parse(row[2]));
+            arr[counter]= new note(float.Parse(row[0]), Int32.Parse(row[1]), float.Parse(row[2]));
             counter++;
         }
        
@@ -123,19 +122,19 @@ public class spawnEnemy : MonoBehaviour {
 public class note
 {
     
-    int time;
+    float time;
     int val;
-    int duration;
-    public note(int t, int v, int d)
+    float duration;
+    public note(float t, int v, float d)
     {
         time = t;
         val = v;
         duration = d;
 
     }
-    public int getTime() { return time; }
+    public float getTime() { return time; }
     public int getVal() {return val; }
-    public int getDuration() { return duration; }
+    public float getDuration() { return duration; }
 
 }
 
