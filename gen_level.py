@@ -1,6 +1,7 @@
 #!/usr/bin/python2
 import midi
 import sys
+tempo = 2000.0
 pattern = midi.read_midifile(sys.argv[1])
 output_file = open(sys.argv[2], 'w+')
 #tempoTrack = pattern[0]
@@ -22,7 +23,6 @@ for event in pattern:
     elif type(event) == midi.NoteOffEvent:
         notes.append((turned_on[event.data[0]], event.data[0], event.tick - turned_on[event.data[0]]))
 notes.sort()
-print >>output_file, 2000
 print >>output_file, len(notes)
 for note in notes:
-    print >>output_file, note[0], note[1], note[2]
+    print >>output_file, note[0]/tempo, note[1], note[2]/tempo
